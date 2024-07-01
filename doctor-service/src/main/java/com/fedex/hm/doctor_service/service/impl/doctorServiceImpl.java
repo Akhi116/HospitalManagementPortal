@@ -4,6 +4,8 @@ import com.fedex.hm.doctor_service.dto.requestDto.availabilityRequestDto;
 import com.fedex.hm.doctor_service.dto.requestDto.requestDto;
 import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.responseDto.responseDto;
+import com.fedex.hm.doctor_service.globalExceptions.customExceptions.AvailabilityNotFoundException;
+import com.fedex.hm.doctor_service.globalExceptions.customExceptions.DoctorNotFoundException;
 import com.fedex.hm.doctor_service.mapper.DtoToEntityMapper;
 import com.fedex.hm.doctor_service.model.AvailabilitySchedules;
 import com.fedex.hm.doctor_service.model.Doctor;
@@ -45,24 +47,31 @@ public class doctorServiceImpl implements doctorService {
     @Override
     public List<responseDto> getAll() {
         List<Doctor> doctorEntities = doctorRepository.findAll();
+
+        if(doctorEntities.isEmpty()){
+            throw new DoctorNotFoundException("No doctors found..!!  ");
+        }
         return doctorEntities.stream().map(mapper::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     public responseDto getDoctorById(Long id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found with id: " + id));
         return mapper.convertToDto(doctor);
     }
 
     @Override
     public List<responseDto> getDoctorBySpecialization(String specialization) {
         List<Doctor> doctors = doctorRepository.findBySpecialization(specialization);
+        if(doctors.isEmpty()){
+            throw new DoctorNotFoundException("Doctors not found with selected Specialization.");
+        }
         return doctors.stream().map(mapper::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     public responseDto updateDoctor(Long id, requestDto dto) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found with id: " + id));
 
         doctor.setName(dto.getName());
         doctor.setSpecialization(dto.getSpecialization());
@@ -88,12 +97,12 @@ public class doctorServiceImpl implements doctorService {
             return mapper.convertToDto(doctor.get());
         }
 
-        return null;
+        throw new DoctorNotFoundException("Doctor not found with id: " + id);
     }
 
     @Override
     public void deleteDoctor(Long id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new DoctorNotFoundException("Doctor not found with id: " + id));
         doctorRepository.deleteById(id);
     }
 
@@ -102,18 +111,24 @@ public class doctorServiceImpl implements doctorService {
     @Override
     public List<availabilityResponseDto> getAvailabilityByDoctorId(Long doctorId) {
         List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorId(doctorId);
+        if(schedules.isEmpty()) {
+            throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId);
+        }
         return schedules.stream().map(mapper::toAvailabilityResponseDto).collect(Collectors.toList());
     }
 
     @Override
     public List<availabilityResponseDto> getAvailabilityByDoctorIdAndDate(Long doctorId, LocalDate date) {
         List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndDate(doctorId,date);
+        if(schedules.isEmpty()) {
+            throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId + " on date " + date);
+        }
         return schedules.stream().map(mapper::toAvailabilityResponseDto).collect(Collectors.toList());
     }
 
     @Override
     public availabilityResponseDto saveAvailability(Long doctorId, availabilityRequestDto availabilityDto) {
-        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(EntityNotFoundException::new);
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
         AvailabilitySchedules schedule = mapper.toAvailabilityEntity(availabilityDto);
         schedule.setDoctor(doctor);
         availabilityRepository.save(schedule);
@@ -121,11 +136,11 @@ public class doctorServiceImpl implements doctorService {
     }
 
     @Override
-    public void deleteAvailability(Long doctorId, Long availabilityId) {
-        AvailabilitySchedules schedule = availabilityRepository.findById(availabilityId).orElseThrow(EntityNotFoundException::new);
-        if(!schedule.getDoctor().getId().equals(doctorId)){
-            throw new IllegalArgumentException("Invalid Doctor ID");
-        }
+    public void deleteAvailability(Long availabilityId) {
+        AvailabilitySchedules schedule = availabilityRepository.findById(availabilityId).orElseThrow(()-> new AvailabilityNotFoundException("Availability schedules not found with id: " + availabilityId));
+//        if(!schedule.getDoctor().getId().equals(doctorId)){
+//            throw new IllegalArgumentException("Invalid Doctor ID");
+//        }
         availabilityRepository.delete(schedule);
     }
 

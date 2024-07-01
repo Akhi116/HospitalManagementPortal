@@ -86,9 +86,9 @@ public class doctorController {
         return ResponseEntity.ok(availabilityList);
     }
 
-    @DeleteMapping("/{id}/availability/{availabilityId}")
-    ResponseEntity<String> deleteAvailability(@PathVariable Long id,@PathVariable Long availabilityId){
-        doctorService.deleteAvailability(id,availabilityId);
+    @DeleteMapping("/availability/{availabilityId}")
+    ResponseEntity<String> deleteAvailability(@PathVariable Long availabilityId){
+        doctorService.deleteAvailability(availabilityId);
         return ResponseEntity.ok("Deleted Successfully");
     }
 }

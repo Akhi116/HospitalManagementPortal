@@ -33,6 +33,6 @@ public interface doctorService {
 
     availabilityResponseDto saveAvailability(Long doctorId, availabilityRequestDto availabilityDto);
 
-    void deleteAvailability(Long doctorId, Long availabilityId);
+    void deleteAvailability(Long availabilityId);
 
 }
