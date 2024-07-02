@@ -12,7 +12,7 @@
 	<artifactId>doctor-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>doctor-service</name>
-	<description>Project for Hospital Management Portal - doctor service</description>
+	<description>Doctor Service for Hospital Management Portal</description>
 	<url/>
 	<licenses>
 		<license/>

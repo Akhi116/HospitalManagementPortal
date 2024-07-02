@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: medical-service
+
+  datasource:
+    url: jdbc:h2:mem:medicalSchema
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 9092
