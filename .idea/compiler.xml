@@ -9,10 +9,12 @@
         <module name="patient-service" />
         <module name="appointment-service" />
         <module name="medical-service" />
-        <module name="registry-service" />
         <module name="doctor-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="registry-service" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
