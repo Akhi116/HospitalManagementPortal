@@ -1,10 +1,10 @@
-package com.fedex.hm.appointment_service;
+package com.fedex.fedexhealth.appointment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppointmentServiceApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
