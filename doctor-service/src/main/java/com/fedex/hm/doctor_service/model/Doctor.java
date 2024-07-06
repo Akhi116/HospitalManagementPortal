@@ -28,6 +28,11 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailabilitySchedules> availabilitySchedules = new ArrayList<>();
 
+    public Doctor(){}
+    public Doctor(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

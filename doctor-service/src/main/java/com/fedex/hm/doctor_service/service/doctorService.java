@@ -5,8 +5,8 @@ import com.fedex.hm.doctor_service.dto.requestDto.availabilityRequestDto;
 import com.fedex.hm.doctor_service.dto.requestDto.requestDto;
 import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.responseDto.responseDto;
+import com.fedex.hm.doctor_service.jmsController.outBoundMessage.updateAvailabilityRequest;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +27,13 @@ public interface doctorService {
 
     void deleteDoctor(Long id);
 
-    List<availabilityResponseDto> getAvailabilityByDoctorId(Long doctorId);
+    // Availability Schedules
 
-    List<availabilityResponseDto> getAvailabilityByDoctorIdAndDate(Long doctorId, LocalDate date);
+    List<availabilityResponseDto> getAvailabilityByDoctorIdAndBookedFalse(Long doctorId);
 
     availabilityResponseDto saveAvailability(Long doctorId, availabilityRequestDto availabilityDto);
 
     void deleteAvailability(Long availabilityId);
 
+    void updateAvailabilitySchedule(updateAvailabilityRequest request);
 }

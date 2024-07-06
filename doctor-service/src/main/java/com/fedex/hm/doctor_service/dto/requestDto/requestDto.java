@@ -1,7 +1,5 @@
 package com.fedex.hm.doctor_service.dto.requestDto;
 
-import jakarta.persistence.Column;
-
 public class requestDto {
     private String name;
     private String specialization;

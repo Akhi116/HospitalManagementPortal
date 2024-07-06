@@ -5,13 +5,11 @@ import com.fedex.hm.doctor_service.dto.requestDto.availabilityRequestDto;
 import com.fedex.hm.doctor_service.dto.requestDto.requestDto;
 import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.responseDto.responseDto;
+import com.fedex.hm.doctor_service.service.doctorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.fedex.hm.doctor_service.service.doctorService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +61,10 @@ public class doctorController {
         return ResponseEntity.ok("Deleted Successfully");
     }
 
+
+    // Availability Schedules
+
+
     @PostMapping("/{id}/availability")
     ResponseEntity<availabilityResponseDto> saveAvailability
             (@PathVariable Long id,@RequestBody availabilityRequestDto dto)
@@ -73,18 +75,10 @@ public class doctorController {
 
     @GetMapping("/{doctorId}/availability")
     ResponseEntity<List<availabilityResponseDto>> getAvailabilityByDoctorId(@PathVariable Long doctorId){
-        List<availabilityResponseDto> availabilityList = doctorService.getAvailabilityByDoctorId(doctorId);
+        List<availabilityResponseDto> availabilityList = doctorService.getAvailabilityByDoctorIdAndBookedFalse(doctorId);
         return ResponseEntity.ok(availabilityList);
     }
 
-    @GetMapping("/{id}/availability/{date}")
-    ResponseEntity<List<availabilityResponseDto>> getAvailabilityByDoctorIdAndDate
-            (@PathVariable Long id,
-             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
-            ){
-        List<availabilityResponseDto> availabilityList = doctorService.getAvailabilityByDoctorIdAndDate(id,date);
-        return ResponseEntity.ok(availabilityList);
-    }
 
     @DeleteMapping("/availability/{availabilityId}")
     ResponseEntity<String> deleteAvailability(@PathVariable Long availabilityId){

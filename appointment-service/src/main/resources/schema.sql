@@ -3,7 +3,7 @@ create table Appointment (
     patient_id INTEGER NOT NULL,
     doctor_id INTEGER NOT NULL,
     status VARCHAR(255) NOT NULL,
-    appointment_date_time DATE NOT NULL,
+    appointment_date_time VARCHAR(255) NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     primary key(id)

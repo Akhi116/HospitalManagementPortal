@@ -6,19 +6,19 @@ import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.responseDto.responseDto;
 import com.fedex.hm.doctor_service.globalExceptions.customExceptions.AvailabilityNotFoundException;
 import com.fedex.hm.doctor_service.globalExceptions.customExceptions.DoctorNotFoundException;
+import com.fedex.hm.doctor_service.jmsController.outBoundMessage.updateAvailabilityRequest;
 import com.fedex.hm.doctor_service.mapper.DtoToEntityMapper;
 import com.fedex.hm.doctor_service.model.AvailabilitySchedules;
 import com.fedex.hm.doctor_service.model.Doctor;
 import com.fedex.hm.doctor_service.repository.availabilityRepository;
 import com.fedex.hm.doctor_service.repository.doctorRepository;
 import com.fedex.hm.doctor_service.service.doctorService;
-import jakarta.persistence.EntityNotFoundException;
+import com.fedex.hm.doctor_service.util.dateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,6 +34,9 @@ public class doctorServiceImpl implements doctorService {
 
     @Autowired
     private DtoToEntityMapper mapper;
+
+    @Autowired
+    private dateFormatter dateFormatter;
 
     // Doctor Operations
 
@@ -109,28 +112,28 @@ public class doctorServiceImpl implements doctorService {
     // Schedule Operations
 
     @Override
-    public List<availabilityResponseDto> getAvailabilityByDoctorId(Long doctorId) {
-        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorId(doctorId);
+    public List<availabilityResponseDto> getAvailabilityByDoctorIdAndBookedFalse(Long doctorId) {
+        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndIsBookedFalse(doctorId);
         if(schedules.isEmpty()) {
             throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId);
         }
         return schedules.stream().map(mapper::toAvailabilityResponseDto).collect(Collectors.toList());
     }
 
-    @Override
-    public List<availabilityResponseDto> getAvailabilityByDoctorIdAndDate(Long doctorId, LocalDate date) {
-        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndDate(doctorId,date);
-        if(schedules.isEmpty()) {
-            throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId + " on date " + date);
-        }
-        return schedules.stream().map(mapper::toAvailabilityResponseDto).collect(Collectors.toList());
-    }
+//    @Override
+//    public List<availabilityResponseDto> getAvailabilityByDoctorIdAndDate(Long doctorId, String date) {
+//        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndDate(doctorId, LocalDate.parse(date));
+//        if(schedules.isEmpty()) {
+//            throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId + " on date " + date);
+//        }
+//        return schedules.stream().map(mapper::toAvailabilityResponseDto).collect(Collectors.toList());
+//    }
 
     @Override
     public availabilityResponseDto saveAvailability(Long doctorId, availabilityRequestDto availabilityDto) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new DoctorNotFoundException("Doctor not found with id: " + doctorId));
         AvailabilitySchedules schedule = mapper.toAvailabilityEntity(availabilityDto);
-        schedule.setDoctor(doctor);
+        schedule.setDoctor(new Doctor(doctorId));
         availabilityRepository.save(schedule);
         return mapper.toAvailabilityResponseDto(schedule);
     }
@@ -143,6 +146,24 @@ public class doctorServiceImpl implements doctorService {
 //        }
         availabilityRepository.delete(schedule);
     }
+
+    // update the booked appointment
+    public void updateAvailabilitySchedule(updateAvailabilityRequest availabilityRequest){
+
+        Long id = availabilityRequest.getDoctorId();
+        String date = dateFormatter.dateFormat(availabilityRequest.getAvailabilitySchedule().getDate());
+        String slotTime = availabilityRequest.getAvailabilitySchedule().getSlotTime();
+
+        AvailabilitySchedules availability = availabilityRepository.findByDoctorIdAndDateAndSlotTime(id,date,slotTime);
+
+        if (availability != null){
+            availability.setBooked(true);
+            availabilityRepository.save(availability);
+        } else {
+            throw new AvailabilityNotFoundException("No Availabilities found..!!");
+        }
+    }
+
 
 
 }

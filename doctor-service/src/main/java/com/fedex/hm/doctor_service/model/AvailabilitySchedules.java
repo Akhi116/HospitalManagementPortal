@@ -2,9 +2,6 @@ package com.fedex.hm.doctor_service.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Entity
 @Table(name = "availability_schedules")
 public class AvailabilitySchedules {
@@ -16,14 +13,20 @@ public class AvailabilitySchedules {
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @Column(name = "date")
-    private LocalDate date;
-    @Column(name = "day_of_week")
-    private String dayOfWeek;
+    private String date;
+    @Column(name = "slot_time")
+    private String slotTime;
 
-    @Column(name = "start_time")
-    private LocalTime startTime;
-    @Column(name = "end_time")
-    private LocalTime endTime;
+    @Column(name = "booked")
+    private boolean isBooked;
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
 
     public Long getId(){
         return this.id;
@@ -33,39 +36,26 @@ public class AvailabilitySchedules {
         return doctor;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
-    }
-
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getSlotTime() {
+        return slotTime;
+    }
+
+    public void setSlotTime(String slotTime) {
+        this.slotTime = slotTime;
+    }
 }
+
+
+

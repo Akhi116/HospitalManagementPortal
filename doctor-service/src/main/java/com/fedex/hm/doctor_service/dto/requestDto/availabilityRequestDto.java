@@ -1,43 +1,32 @@
 package com.fedex.hm.doctor_service.dto.requestDto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 public class availabilityRequestDto {
-    private LocalDate date;
-    private String dayOfWeek;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String date;
+    private String slotTime;
 
-    public LocalDate getDate() {
+    private boolean isBooked;
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
+    public String getSlotTime() {
+        return slotTime;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setSlotTime(String slotTime) {
+        this.slotTime = slotTime;
     }
 }

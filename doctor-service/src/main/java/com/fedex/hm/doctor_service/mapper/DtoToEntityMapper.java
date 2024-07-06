@@ -1,8 +1,8 @@
 package com.fedex.hm.doctor_service.mapper;
 
 import com.fedex.hm.doctor_service.dto.requestDto.availabilityRequestDto;
-import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.requestDto.requestDto;
+import com.fedex.hm.doctor_service.dto.responseDto.availabilityResponseDto;
 import com.fedex.hm.doctor_service.dto.responseDto.responseDto;
 import com.fedex.hm.doctor_service.model.AvailabilitySchedules;
 import com.fedex.hm.doctor_service.model.Doctor;
@@ -35,10 +35,7 @@ public class DtoToEntityMapper {
     public AvailabilitySchedules toAvailabilityEntity(availabilityRequestDto dto){
         AvailabilitySchedules availability = new AvailabilitySchedules();
         availability.setDate(dto.getDate());
-        availability.setDayOfWeek(dto.getDayOfWeek());
-        availability.setStartTime(dto.getStartTime());
-        availability.setEndTime(dto.getEndTime());
-
+        availability.setSlotTime(dto.getSlotTime());
         return availability;
     }
 
@@ -46,9 +43,7 @@ public class DtoToEntityMapper {
         availabilityResponseDto dto = new availabilityResponseDto();
         dto.setId(availability.getId());
         dto.setDate(availability.getDate());
-        dto.setDayOfWeek(availability.getDayOfWeek());
-        dto.setStartTime(availability.getStartTime());
-        dto.setEndTime(availability.getEndTime());
+        dto.setSlotTime(availability.getSlotTime());
         return dto;
     }
 

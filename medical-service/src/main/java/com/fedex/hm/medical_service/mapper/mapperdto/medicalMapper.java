@@ -14,7 +14,6 @@ public class medicalMapper {
         entity.setRecordDetails(dto.getRecordDetails());
         return entity;
 
-
     }
     public medicalResponseDto convertToDto(medicalEntity entity){
         medicalResponseDto responseDto=new medicalResponseDto();

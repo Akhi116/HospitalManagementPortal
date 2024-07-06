@@ -1,7 +1,5 @@
 package com.fedex.hm.patient_service.dto;
 
-import jakarta.persistence.Column;
-
 public class responseDto {
 
     private Long id;

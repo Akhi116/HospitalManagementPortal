@@ -9,7 +9,4 @@ public interface medicalService {
     List<medicalResponseDto> getMedicalRecords();
     List<medicalResponseDto> getRecordById(Long id);
 
-
-
-
 }

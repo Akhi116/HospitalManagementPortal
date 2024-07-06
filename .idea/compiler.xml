@@ -13,6 +13,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="fedexhealth.appointment" target="17" />
       <module name="registry-service" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -20,6 +21,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="appointment-service" options="-parameters" />
       <module name="doctor-service" options="-parameters" />
+      <module name="fedexhealth.appointment" options="-parameters" />
       <module name="medical-service" options="-parameters" />
       <module name="patient-service" options="-parameters" />
       <module name="registry-service" options="-parameters" />

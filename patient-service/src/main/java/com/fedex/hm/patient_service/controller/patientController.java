@@ -3,10 +3,12 @@ package com.fedex.hm.patient_service.controller;
 
 import com.fedex.hm.patient_service.dto.requestDto;
 import com.fedex.hm.patient_service.dto.responseDto;
+import com.fedex.hm.patient_service.jmsController.jmsProducer.AppointmentPublisher;
+import com.fedex.hm.patient_service.jmsController.outBoundAppointmentRequest.AppointmentRequest;
+import com.fedex.hm.patient_service.service.patientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.fedex.hm.patient_service.service.patientService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,6 +21,9 @@ public class patientController {
 
     @Autowired
     private patientService patientService;
+
+    @Autowired
+    private AppointmentPublisher appointmentPublisher;
 
     @PostMapping("/create")
     ResponseEntity<responseDto> savePatient(@RequestBody requestDto dto) throws URISyntaxException {
@@ -64,4 +69,10 @@ public class patientController {
     }
 
 
+    // Book appointment
+    @PostMapping("/book")
+    public ResponseEntity<String> bookAppointment(@RequestBody AppointmentRequest request){
+        appointmentPublisher.sendAppointmentRequest(request);
+        return ResponseEntity.ok("Appointment request send successfully");
+    }
 }

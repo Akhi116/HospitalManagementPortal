@@ -12,9 +12,6 @@ public class medicalEntity {
     private Long doctorId;
     @Column(name = "patient_id")
     private Long patientId;
-
-
-
     @Column(name = "record_details")
     private String recordDetails;
 
