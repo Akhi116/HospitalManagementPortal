@@ -8,6 +8,8 @@ public class responseDto {
     private String contactNumber;
     private String email;
 
+    private String password;
+
     public Long getId() {
         return id;
     }
@@ -48,4 +50,11 @@ public class responseDto {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

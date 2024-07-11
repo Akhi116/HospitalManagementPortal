@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface availabilityRepository extends JpaRepository<AvailabilitySchedules, Long> {
 
-    List<AvailabilitySchedules> findByDoctorIdAndIsBookedFalse(Long doctorId);
+    List<AvailabilitySchedules> findByDoctorIdAndDateAndIsBookedFalse(Long doctorId,String date);
 
     AvailabilitySchedules findByDoctorIdAndDateAndSlotTime(Long doctorId, String date, String time);
 }

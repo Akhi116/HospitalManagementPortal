@@ -3,7 +3,8 @@ CREATE TABLE doctor (
     name VARCHAR(255),
     specialization VARCHAR(255),
     contact_number VARCHAR(255),
-    email VARCHAR(255)
+    email VARCHAR(255),
+    password VARCHAR(255)
 );
 
 CREATE TABLE availability_schedules (

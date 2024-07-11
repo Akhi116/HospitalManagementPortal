@@ -7,16 +7,19 @@ import com.fedex.hm.patient_service.jmsController.jmsProducer.AppointmentPublish
 import com.fedex.hm.patient_service.jmsController.outBoundAppointmentRequest.AppointmentRequest;
 import com.fedex.hm.patient_service.service.patientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/patient")
+@CrossOrigin(origins = "http://localhost:4200")
 public class patientController {
 
     @Autowired
@@ -74,5 +77,13 @@ public class patientController {
     public ResponseEntity<String> bookAppointment(@RequestBody AppointmentRequest request){
         appointmentPublisher.sendAppointmentRequest(request);
         return ResponseEntity.ok("Appointment request send successfully");
+    }
+
+    // Authentication
+    @PostMapping("/authenticate")
+    public ResponseEntity<responseDto> authenticate(@RequestHeader("email") String email,
+                                                    @RequestHeader("password") String password){
+        responseDto dto = patientService.authenticate(email,password);
+        return ResponseEntity.ok(dto);
     }
 }

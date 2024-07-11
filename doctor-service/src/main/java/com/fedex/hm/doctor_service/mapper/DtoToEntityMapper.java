@@ -17,7 +17,7 @@ public class DtoToEntityMapper {
         doctor.setSpecialization(dto.getSpecialization());
         doctor.setContactNumber(dto.getContactNumber());
         doctor.setEmail(dto.getEmail());
-//        doctor.setAvailabilitySchedule(dto.getAvailabilitySchedule());
+        doctor.setPassword(dto.getPassword());
         return doctor;
     }
 
@@ -28,7 +28,8 @@ public class DtoToEntityMapper {
         dto.setSpecialization(doctor.getSpecialization());
         dto.setContactNumber(doctor.getContactNumber());
         dto.setEmail(doctor.getEmail());
-//        dto.setAvailabilitySchedule(doctor.getAvailabilitySchedule());
+        dto.setPassword(doctor.getPassword());
+
         return dto;
     }
 

@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/doctor")
+@CrossOrigin(origins = "http://localhost:4200")
 public class doctorController {
 
     @Autowired
@@ -35,6 +36,12 @@ public class doctorController {
     @GetMapping("/{id}")
     ResponseEntity<responseDto> getDoctorById(@PathVariable Long id){
         return ResponseEntity.ok(doctorService.getDoctorById(id));
+    }
+
+    @GetMapping("/specializations")
+    ResponseEntity<List<String>> getSpecializations(){
+        List<String> specializationList = doctorService.getSpecializations();
+        return ResponseEntity.ok(specializationList);
     }
 
     @GetMapping("/specialization/{specialization}")
@@ -73,9 +80,9 @@ public class doctorController {
         return ResponseEntity.ok(schedule);
     }
 
-    @GetMapping("/{doctorId}/availability")
-    ResponseEntity<List<availabilityResponseDto>> getAvailabilityByDoctorId(@PathVariable Long doctorId){
-        List<availabilityResponseDto> availabilityList = doctorService.getAvailabilityByDoctorIdAndBookedFalse(doctorId);
+    @GetMapping("/{doctorId}/availabilityOn/{date}")
+    ResponseEntity<List<availabilityResponseDto>> getAvailabilityByDoctorId(@PathVariable Long doctorId, @PathVariable String date){
+        List<availabilityResponseDto> availabilityList = doctorService.getAvailabilityByDoctorIdAndDateAndBookedFalse(doctorId,date);
         return ResponseEntity.ok(availabilityList);
     }
 
@@ -84,5 +91,14 @@ public class doctorController {
     ResponseEntity<String> deleteAvailability(@PathVariable Long availabilityId){
         doctorService.deleteAvailability(availabilityId);
         return ResponseEntity.ok("Deleted Successfully");
+    }
+
+
+    // Authentication
+    @PostMapping("/authenticate")
+    public ResponseEntity<responseDto> authenticate(@RequestHeader("email") String email,
+                                                    @RequestHeader("password") String password){
+        responseDto dto = doctorService.authenticate(email,password);
+        return ResponseEntity.ok(dto);
     }
 }

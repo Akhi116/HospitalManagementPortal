@@ -29,11 +29,15 @@ public interface doctorService {
 
     // Availability Schedules
 
-    List<availabilityResponseDto> getAvailabilityByDoctorIdAndBookedFalse(Long doctorId);
+    List<availabilityResponseDto> getAvailabilityByDoctorIdAndDateAndBookedFalse(Long doctorId, String date);
 
     availabilityResponseDto saveAvailability(Long doctorId, availabilityRequestDto availabilityDto);
 
     void deleteAvailability(Long availabilityId);
 
     void updateAvailabilitySchedule(updateAvailabilityRequest request);
+
+    List<String> getSpecializations();
+
+    responseDto authenticate(String email, String password);
 }

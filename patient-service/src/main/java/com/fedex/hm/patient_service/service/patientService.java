@@ -21,4 +21,6 @@ public interface patientService {
     responseDto updatePatientByFields(Long id, Map<String, Object> field);
 
     void deletePatientById(Long id);
+
+    responseDto authenticate(String email,String password);
 }

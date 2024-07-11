@@ -25,6 +25,9 @@ public class Doctor {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailabilitySchedules> availabilitySchedules = new ArrayList<>();
 
@@ -69,4 +72,11 @@ public class Doctor {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

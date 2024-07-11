@@ -5,6 +5,7 @@ public class requestDto {
     private String specialization;
     private String contactNumber;
     private String email;
+    private String password;
 
     public String getName() {
         return name;
@@ -36,5 +37,13 @@ public class requestDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

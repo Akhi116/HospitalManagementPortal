@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import javax.swing.text.html.Option;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -96,5 +97,16 @@ public class patientServiceImpl implements patientService {
         Patient patient = repository.findById(id).orElseThrow(()->new PatientNotFoundException("No patient found with id: " + id));
         repository.deleteById(id);
 
+    }
+
+    @Override
+    public responseDto authenticate(String email, String password) {
+        Optional<Patient> patientOptional = repository.findByEmail(email);
+
+        if(patientOptional.isPresent()){
+            Patient patient = patientOptional.get();
+            if(patient.getPassword().equals(password)) return mapper.toConvertDto(patient);
+        }
+        throw new PatientNotFoundException("Invalid Credentials...!!");
     }
 }

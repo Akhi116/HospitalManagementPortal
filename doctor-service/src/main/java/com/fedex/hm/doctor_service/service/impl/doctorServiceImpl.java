@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import javax.print.Doc;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -112,8 +113,8 @@ public class doctorServiceImpl implements doctorService {
     // Schedule Operations
 
     @Override
-    public List<availabilityResponseDto> getAvailabilityByDoctorIdAndBookedFalse(Long doctorId) {
-        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndIsBookedFalse(doctorId);
+    public List<availabilityResponseDto> getAvailabilityByDoctorIdAndDateAndBookedFalse(Long doctorId, String date) {
+        List<AvailabilitySchedules> schedules = availabilityRepository.findByDoctorIdAndDateAndIsBookedFalse(doctorId,date);
         if(schedules.isEmpty()) {
             throw new AvailabilityNotFoundException("No availability schedules found for doctor id: " + doctorId);
         }
@@ -164,6 +165,22 @@ public class doctorServiceImpl implements doctorService {
         }
     }
 
+    @Override
+    public List<String> getSpecializations() {
+        return doctorRepository.findSpecializations();
+    }
+
+    @Override
+    public responseDto authenticate(String email, String password) {
+        Optional<Doctor> doctorOptional = doctorRepository.findByEmail(email);
+
+        if(doctorOptional.isPresent()){
+            Doctor doctor = doctorOptional.get();
+            if(doctor.getPassword().equals(password)) return mapper.convertToDto(doctor);
+        }
+
+        throw new DoctorNotFoundException("doctor not found with the email id..!!");
+    }
 
 
 }
