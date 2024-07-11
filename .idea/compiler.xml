@@ -7,13 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="patient-service" />
-        <module name="fedexhealth.appointment" />
         <module name="medical-service" />
         <module name="doctor-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="appointment-service" target="17" />
+      <module name="fedexhealth.appointment" target="17" />
       <module name="registry-service" target="17" />
     </bytecodeTargetLevel>
   </component>
